@@ -1,18 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class ShipData : MonoBehaviour
+namespace Ship
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ShipData
     {
-        
-    }
+        private int _health;
 
-    // Update is called once per frame
-    void Update()
-    {
+        public event Action ShipDead;
         
+        public int Health
+        {
+            get => _health;
+
+            set
+            {
+                _health = value;
+                
+                if (_health <=0)
+                    ShipDead?.Invoke();
+            }
+        }
+
+        public ShipData(int health)
+        {
+            Health = health;
+        }
     }
 }

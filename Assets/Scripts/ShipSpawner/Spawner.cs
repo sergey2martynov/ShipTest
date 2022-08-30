@@ -1,3 +1,5 @@
+using GameUpdater;
+using Ship;
 using StaticData;
 using UnityEngine;
 
@@ -8,12 +10,34 @@ namespace ShipSpawner
         private PrefabHolder _prefabHolder;
         private SpawnConfig _spawnConfig;
         private Transform _shipParent;
+        private Updater _updater;
+        private ShipStats _shipStats;
 
-        public Spawner(PrefabHolder prefabHolder, SpawnConfig spawnConfig, Transform shipParent)
+        private float _elapsedTime;
+
+        public Spawner(PrefabHolder prefabHolder, SpawnConfig spawnConfig, Transform shipParent, Updater updater, ShipStats shipStats)
         {
             _prefabHolder = prefabHolder;
             _spawnConfig = spawnConfig;
             _shipParent = shipParent;
+            _updater = updater;
+            _shipStats = shipStats;
+        }
+
+        public void Initialize()
+        {
+            _updater.Updated += OnUpdate;
+        }
+
+        private void OnUpdate()
+        {
+            _elapsedTime += Time.deltaTime;
+
+            if (_elapsedTime > 5)
+            {
+                SpawnShip();
+                _elapsedTime = 0;
+            }
         }
 
         public void SpawnShip()
@@ -33,16 +57,19 @@ namespace ShipSpawner
                 isSpawnRight = true;
             }
 
-            var ship = Object.Instantiate(_prefabHolder.ShipView, spawnPosition, Quaternion.identity,
+            var shipData = new ShipData(_shipStats.Health);
+            var shipView = Object.Instantiate(_prefabHolder.ShipView, spawnPosition, Quaternion.identity,
                 _shipParent);
+            var shipLogic = new ShipLogic(shipView, shipData);
+            shipLogic.Initialize();
 
             if (isSpawnRight)
             {
-                ship.Move(_spawnConfig.LeftSpawnPositionX, 3);
+                shipView.Move(_spawnConfig.LeftSpawnPositionX, 3);
             }
             else
             {
-                ship.Move(_spawnConfig.RightSpawnPositionX, 3);
+                shipView.Move(_spawnConfig.RightSpawnPositionX, 3);
             }
         }
     }

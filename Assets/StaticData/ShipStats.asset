@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4501e11df0fbe33498209672669b3939, type: 3}
-  m_Name: PrefabHolder
+  m_Script: {fileID: 11500000, guid: f80418cdcb4118c42b4c092cbb977746, type: 3}
+  m_Name: ShipStats
   m_EditorClassIdentifier: 
-  _shipView: {fileID: 9179503065681900290, guid: 432e804ce6a4827409eca3abc220cfae, type: 3}
-  _projectileView: {fileID: 4446019527488083294, guid: 1a2128653e1ec294ca98bc9c06fa5973, type: 3}
+  _health: 10
